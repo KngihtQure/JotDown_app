@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
         val txtHi = findViewById<TextView>(R.id.tvGreeting)
         val txtemail = findViewById<TextView>(R.id.tvEmail)
-        val addNote = findViewById<Button>(R.id.btnCreateNote)
+        val createNote = findViewById<Button>(R.id.btnCreateNote)
 
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
 
@@ -28,11 +28,11 @@ class MainActivity : AppCompatActivity() {
                 val username = it.child("username").value.toString()
                 val email = it.child("email").value.toString()
 
-                txtHi.text = "Hi, $username"
-                txtemail.text = "Hi, $email"
+                txtHi.text = "Hi, $username."
+                txtemail.text = "$email"
             }
 
-        addNote.setOnClickListener {
+        createNote.setOnClickListener {
 
         }
     }
