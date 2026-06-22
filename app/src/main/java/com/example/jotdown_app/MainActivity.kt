@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         val txtHi = findViewById<TextView>(R.id.tvGreeting)
         val txtemail = findViewById<TextView>(R.id.tvEmail)
         val createNote = findViewById<Button>(R.id.btnCreateNote)
+        val btnLogout = findViewById<ImageButton>(R.id.btnLogout)
 
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
 
@@ -25,15 +26,25 @@ class MainActivity : AppCompatActivity() {
             .child(uid)
             .get()
             .addOnSuccessListener {
-                val username = it.child("username").value.toString()
-                val email = it.child("email").value.toString()
+                if (it.exists()) {
+                    val username = it.child("username").value.toString()
+                    val email = it.child("email").value.toString()
 
-                txtHi.text = "Hi, $username."
-                txtemail.text = "$email"
+                    txtHi.text = "Hi, $username."
+                    txtemail.text = "$email"
+                }
             }
 
-        createNote.setOnClickListener {
+        btnLogout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, Login::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
 
+        createNote.setOnClickListener {
+            startActivity(Intent(this, Create_note::class.java))
         }
     }
 }
