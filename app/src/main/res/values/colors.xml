@@ -5,4 +5,5 @@
     <color name="green">#71BC39</color>
     <color name="bg_screen_green">#F0F7E6</color>
     <color name="gray">#808080</color>
+    <color name="note_card_bg">#E6F9D2</color>
 </resources>
