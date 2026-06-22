@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "608487975137",
+    "firebase_url": "https://jotdown-1341c-default-rtdb.firebaseio.com",
+    "project_id": "jotdown-1341c",
+    "storage_bucket": "jotdown-1341c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608487975137:android:9a548f524d0d92cc52efa0",
+        "android_client_info": {
+          "package_name": "com.example.jotdown"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB72Cxmddjxwr2I_JPugz-rkjwOBgZZ7N0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608487975137:android:6dcbdaae467b203552efa0",
+        "android_client_info": {
+          "package_name": "com.example.jotdown_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB72Cxmddjxwr2I_JPugz-rkjwOBgZZ7N0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
