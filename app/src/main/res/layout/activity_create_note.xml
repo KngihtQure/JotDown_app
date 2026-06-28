@@ -306,14 +306,23 @@
         <TextView
             android:id="@+id/tvSearchPlaceholder"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="44dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_edittext"
-            android:gravity="center"
-            android:text="Search"
-            android:textColor="@color/gray"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:background="@drawable/bg_input_field"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="Search"
+            android:inputType="text"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="13sp"
+            app:backgroundTint="@null"
+            android:enabled="false"
+            android:alpha="0.8"/>
 
     </LinearLayout>
 
