@@ -39,7 +39,7 @@
         android:background="@android:color/transparent"
         android:contentDescription="Logout"
         android:scaleType="centerInside"
-        android:src="@android:drawable/ic_lock_power_off"
+        android:src="@drawable/ic_logout"
         app:layout_constraintBottom_toBottomOf="@id/tvEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvGreeting"
@@ -204,7 +204,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_gallery"
+                            android:src="@drawable/ic_add_image"
                             app:tint="@color/black" />
 
                         <TextView
