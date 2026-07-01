@@ -9,16 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jotdown_app.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var noteAdapter: NoteAdapter
-    private lateinit var folderAdapter: FolderAdapter
+    private lateinit var adapter: NoteAdapter
     private var notesList = mutableListOf<Note>()
-    private var foldersList = mutableListOf<FolderData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,18 +23,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        noteAdapter = NoteAdapter(emptyList())
+        // Setup RecyclerView
+        adapter = NoteAdapter(emptyList())
         binding.rvNotes.layoutManager = LinearLayoutManager(this)
-        binding.rvNotes.adapter = noteAdapter
-
-        folderAdapter = FolderAdapter(emptyList()) { folder ->
-            val intent = Intent(this, Folder::class.java)
-            intent.putExtra("folderId", folder.id)
-            intent.putExtra("folderName", folder.title)
-            startActivity(intent)
-        }
-        binding.rvFolders.layoutManager = LinearLayoutManager(this)
-        binding.rvFolders.adapter = folderAdapter
+        binding.rvNotes.adapter = adapter
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
@@ -49,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 
         loadUserInfo(uid)
         loadNotes(uid)
-        loadFolders(uid)
 
         binding.btnLogout.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
@@ -63,86 +51,61 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, Create_note::class.java))
         }
 
-        binding.btnCreateFolder.setOnClickListener {
-            startActivity(Intent(this, Create_Folder::class.java))
-        }
-
+        // Search Filter
         binding.etSearch.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 filterNotes(s.toString())
-                filterFolder(s.toString())
             }
             override fun afterTextChanged(s: android.text.Editable?) {}
         })
     }
 
     private fun loadUserInfo(uid: String) {
-        val uid = FirebaseAuth.getInstance().currentUser!!.uid
-
         FirebaseDatabase.getInstance().getReference("users").child(uid).get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val username = document.child("username").value.toString().replaceFirstChar { it.titlecase() }
-                    val email = document.child("email").value.toString()
-                    binding.tvGreeting.text = "Hi, ${username}."
+            .addOnSuccessListener {
+                if (it.exists()) {
+                    val username = it.child("username").value.toString()
+                    val email = it.child("email").value.toString()
+                    binding.tvGreeting.text = "Hi, $username."
                     binding.tvEmail.text = email
                 }
             }
     }
 
     private fun loadNotes(uid: String) {
-        FirebaseFirestore.getInstance().collection("notes").document(uid)
-            .collection("user_notes")
-            .whereEqualTo("folderId", "")
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    Toast.makeText(this, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
-                    return@addSnapshotListener
-                }
-                if (snapshot != null) {
+        FirebaseDatabase.getInstance().getReference("notes").child(uid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
                     notesList.clear()
-                    for (doc in snapshot.documents) {
-                        doc.toObject(Note::class.java)?.let { notesList.add(it) }
+                    for (noteSnapshot in snapshot.children) {
+                        val note = noteSnapshot.getValue(Note::class.java)
+                        if (note != null) {
+                            notesList.add(note)
+                        }
                     }
-                    noteAdapter.submitList(notesList)
-                    binding.layoutEmptyState.visibility = if (notesList.isEmpty()) View.VISIBLE else View.GONE
-                    binding.rvNotes.visibility = if (notesList.isEmpty()) View.GONE else View.VISIBLE
-                }
-            }
-    }
+                    notesList.sortByDescending { it.timestamp }
+                    adapter.submitList(notesList)
 
-    private fun loadFolders(uid: String) {
-        FirebaseFirestore.getInstance().collection("folders").document(uid)
-            .collection("user_folders")
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    Toast.makeText(this, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
-                    return@addSnapshotListener
-                }
-                if (snapshot != null) {
-                    foldersList.clear()
-                    for (doc in snapshot.documents) {
-                        doc.toObject(FolderData::class.java)?.let { foldersList.add(it) }
+                    if (notesList.isEmpty()) {
+                        binding.layoutEmptyState.visibility = View.VISIBLE
+                        binding.rvNotes.visibility = View.GONE
+                    } else {
+                        binding.layoutEmptyState.visibility = View.GONE
+                        binding.rvNotes.visibility = View.VISIBLE
                     }
-                    folderAdapter.submitList(foldersList)
-                    binding.layoutEmptyState.visibility = if (foldersList.isEmpty()) View.VISIBLE else View.GONE
-                    binding.rvFolders.visibility = View.VISIBLE
                 }
-            }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@MainActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     private fun filterNotes(query: String) {
         val filteredList = notesList.filter {
             it.title.contains(query, ignoreCase = true) || it.content.contains(query, ignoreCase = true)
         }
-        noteAdapter.submitList(filteredList)
-    }
-
-    private fun filterFolder(query: String) {
-        val filteredList = foldersList.filter {
-            it.title.contains(query, ignoreCase = true)
-        }
-        folderAdapter.submitList(filteredList)
+        adapter.submitList(filteredList)
     }
 }
