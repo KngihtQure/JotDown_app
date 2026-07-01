@@ -1,10 +1,11 @@
 package com.example.jotdown_app
 
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.jotdown_app.databinding.ItemNoteBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,7 +22,13 @@ class NoteAdapter(
 
             if (item.imageUrl.isNotEmpty()) {
                 binding.ivNoteImage.visibility = View.VISIBLE
-                binding.ivNoteImage.load(item.imageUrl)
+                try {
+                    val imageBytes = Base64.decode(item.imageUrl, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                    binding.ivNoteImage.setImageBitmap(bitmap)
+                } catch (e: Exception) {
+                    binding.ivNoteImage.visibility = View.GONE
+                }
             } else {
                 binding.ivNoteImage.visibility = View.GONE
             }

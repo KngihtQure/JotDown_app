@@ -8,6 +8,17 @@
     tools:context=".Login"
     android:background="#F0F7E6">
 
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:background="@drawable/jotdown"
+        app:layout_constraintBottom_toTopOf="@+id/tvAppTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1" />
+
     <TextView
         android:id="@+id/tvAppTitle"
         android:layout_width="wrap_content"

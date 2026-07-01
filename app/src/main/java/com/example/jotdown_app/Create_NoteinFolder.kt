@@ -4,7 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.media.ExifInterface
+import androidx.exifinterface.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
@@ -14,26 +14,27 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.example.jotdown_app.databinding.ActivityCreateNoteBinding
+import com.example.jotdown_app.databinding.ActivityCreateNoteinfolderBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
-class Create_note : AppCompatActivity() {
-
-    private lateinit var binding: ActivityCreateNoteBinding
+class Create_NoteinFolder : AppCompatActivity() {
+    private lateinit var binding: ActivityCreateNoteinfolderBinding
     private var selectedImageUri: Uri? = null
     private lateinit var pickImageLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityCreateNoteBinding.inflate(layoutInflater)
+        binding = ActivityCreateNoteinfolderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val folderId = intent.getStringExtra("folderId") ?: ""
+        val folderName = intent.getStringExtra("folderName") ?: "Folder"
+
+        binding.tvFolderName.text = folderName
 
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
@@ -50,16 +51,6 @@ class Create_note : AppCompatActivity() {
             return
         }
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
-
-        FirebaseDatabase.getInstance().getReference("users").child(uid).get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val username = document.child("username").value.toString().replaceFirstChar { it.titlecase() }
-                    val email = document.child("email").value.toString()
-                    binding.tvGreeting.text = "Hi, ${username}."
-                    binding.tvEmail.text = email
-                }
-            }
 
 
         binding.layoutAddImage.setOnClickListener {
@@ -90,15 +81,7 @@ class Create_note : AppCompatActivity() {
             saveNoteToDatabase(uid, title, content, base64Image, folderId)
         }
 
-        binding.btnCancel.setOnClickListener {
-            finish()
-        }
-
-        binding.btnLogout.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            val intent = Intent(this, Login::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+        binding.btnBack.setOnClickListener {
             finish()
         }
     }
