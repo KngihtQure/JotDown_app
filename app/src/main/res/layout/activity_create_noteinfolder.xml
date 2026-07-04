@@ -5,54 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_screen_green"
-    tools:context=".Create_note">
+    tools:context=".Create_NoteinFolder">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="45dp"
-        android:layout_height="50dp"
-        android:background="@drawable/jotdown"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvGreeting"
-        app:layout_constraintBottom_toBottomOf="@id/tvEmail"
-        android:layout_marginStart="20dp"
-        android:alpha="0.5"/>
 
     <TextView
-        android:id="@+id/tvEmail"
+        android:id="@+id/tvFolderName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="niteguerrero@gmail.com"
-        android:textColor="@color/gray"
-        android:textSize="11sp"
-        app:layout_constraintStart_toStartOf="@id/tvGreeting"
-        app:layout_constraintTop_toBottomOf="@id/tvGreeting"
-        android:alpha="0.5"/>
-
-    <TextView
-        android:id="@+id/tvGreeting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="24dp"
-        android:text="Hi,  "
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="Folder Name"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:alpha="0.5"/>
 
     <ImageButton
-        android:id="@+id/btnLogout"
+        android:id="@+id/btnBack"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="24dp"
         android:background="@android:color/transparent"
         android:contentDescription="Logout"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_logout"
-        app:layout_constraintBottom_toBottomOf="@id/tvEmail"
+        android:src="@drawable/outline_arrow_back_ios_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvGreeting"
         app:tint="@color/black"
@@ -102,7 +80,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvEmail">
+        app:layout_constraintTop_toBottomOf="@id/tvFolderName">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -322,29 +300,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/btnCreateFolderPlaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_button_green"
-            android:drawableStart="@android:drawable/ic_input_add"
-            android:drawableTint="@color/white"
-            android:drawablePadding="8dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:text="+ Create Folder"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:backgroundTint="@null"
-            android:enabled="false"
-            android:alpha="0.5"/>
-
-        <Space
-            android:layout_width="90dp"
-            android:layout_height="0dp" />
 
         <Button
             android:id="@+id/btnCreateNotePlaceholder"

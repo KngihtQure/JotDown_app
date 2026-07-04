@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import android.widget.*
 import com.google.android.material.textfield.TextInputEditText
 
@@ -40,13 +41,13 @@ class Register : AppCompatActivity() {
                             username,
                             email
                         )
-
                         FirebaseDatabase.getInstance()
                             .getReference("users")
                             .child(uid)
                             .setValue(user)
+
                         Toast.makeText(this, "Register Successful", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, MainActivity::class.java))
+                        startActivity(Intent(this, Login::class.java))
                         finish()
                     }else{
                         Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
