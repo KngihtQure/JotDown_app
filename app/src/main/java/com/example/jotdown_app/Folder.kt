@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jotdown_app.databinding.ActivityFolderBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-<<<<<<< HEAD
 import com.example.jotdown_app.databinding.EditNoteBinding
 import android.app.Dialog
 import android.graphics.Bitmap
@@ -22,18 +21,13 @@ import android.view.Window
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
 import java.io.ByteArrayOutputStream
-=======
->>>>>>> 4a33ce6ded227ee6d584b06b83b49b01c12ae299
 
 class Folder : AppCompatActivity() {
 
     private lateinit var binding: ActivityFolderBinding
     private lateinit var noteadapter: NoteAdapter
     private var notesList = mutableListOf<Note>()
-<<<<<<< HEAD
     private var imagepick: ((String) -> Unit)?= null
-=======
->>>>>>> 4a33ce6ded227ee6d584b06b83b49b01c12ae299
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,13 +42,10 @@ class Folder : AppCompatActivity() {
 
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
-<<<<<<< HEAD
         noteadapter = NoteAdapter(emptyList()){ note ->
             showEditNoteDialog(uid, note)
         }
-=======
-        noteadapter = NoteAdapter(emptyList())
->>>>>>> 4a33ce6ded227ee6d584b06b83b49b01c12ae299
+
         binding.rvFolderNotes.layoutManager = LinearLayoutManager(this)
         binding.rvFolderNotes.adapter = noteadapter
 
@@ -107,7 +98,6 @@ class Folder : AppCompatActivity() {
         }
         noteadapter.submitList(filteredList)
     }
-<<<<<<< HEAD
 
     private fun showEditNoteDialog(uid:String, note:Note){
         val dialog = Dialog(this)
@@ -197,7 +187,7 @@ class Folder : AppCompatActivity() {
                     Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                 }.addOnFailureListener { e ->
-                    Toast.makeText(this, "Update failed: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show()
                 }
         }
 
@@ -225,12 +215,8 @@ class Folder : AppCompatActivity() {
             BitmapFactory.decodeStream(input)
         }
 
-        val resize = Bitmap.createScaledBitmap(bitmap, 50, 50, true)
-
         val outputStream = ByteArrayOutputStream()
         bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 50, outputStream)
         return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
     }
-=======
->>>>>>> 4a33ce6ded227ee6d584b06b83b49b01c12ae299
 }

@@ -5,12 +5,14 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jotdown_app.databinding.ActivityMainBinding
@@ -18,6 +20,7 @@ import com.example.jotdown_app.databinding.EditNoteBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import java.io.ByteArrayOutputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var folderAdapter: FolderAdapter
     private var notesList = mutableListOf<Note>()
     private var foldersList = mutableListOf<FolderData>()
+    private var imagepick: ((String) -> Unit)?= null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,11 +173,34 @@ class MainActivity : AppCompatActivity() {
         dialogBinding.etNoteContent.setText(note.content)
 
         var imageVal = note.imageUrl
+        imagepick = {newImage -> imageVal = newImage
+            val imageBytes = Base64.decode(newImage, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+            dialogBinding.layoutAddImage.visibility = View.GONE
+            dialogBinding.ivImagePreview.visibility = View.VISIBLE
+            dialogBinding.ivImagePreview.setImageBitmap(bitmap)
+
+            val params = dialogBinding.btnSave.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+            params.topToBottom = dialogBinding.ivImagePreview.id
+            dialogBinding.btnSave.layoutParams = params
+        }
+
+        dialogBinding.layoutAddImage.setOnClickListener {
+            launchpickimage.launch("image/*")
+        }
+
+        dialogBinding.ivImagePreview.setOnClickListener {
+            launchpickimage.launch("image/*")
+        }
 
         if(note.imageUrl.isNotEmpty()){
             dialogBinding.layoutAddImage.visibility = View.GONE
             dialogBinding.ivImagePreview.visibility = View.VISIBLE
 
+            val params = dialogBinding.btnSave.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+            params.topToBottom = dialogBinding.ivImagePreview.id
+            dialogBinding.btnSave.layoutParams = params
             try{
                 val imageBytes = Base64.decode(note.imageUrl, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
@@ -180,6 +208,10 @@ class MainActivity : AppCompatActivity() {
             }catch (e: Exception){
                 dialogBinding.ivImagePreview.visibility = View.GONE
                 dialogBinding.layoutAddImage.visibility = View.VISIBLE
+
+                val params = dialogBinding.btnSave.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+                params.topToBottom = dialogBinding.layoutAddImage.id
+                dialogBinding.btnSave.layoutParams = params
             }
         }else{
             dialogBinding.ivImagePreview.visibility = View.GONE
@@ -228,5 +260,22 @@ class MainActivity : AppCompatActivity() {
                 }
         }
         dialog.show()
+    }
+
+    private val launchpickimage = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ){ uri: Uri? -> uri ?: return@registerForActivityResult
+        val imageBase64 = uriToBase64(uri)
+        imagepick?.invoke(imageBase64)
+    }
+
+    private fun  uriToBase64(uri: Uri): String{
+        val bitmap = contentResolver.openInputStream(uri).use{input ->
+            BitmapFactory.decodeStream(input)
+        }
+
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 50, outputStream)
+        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
     }
 }
