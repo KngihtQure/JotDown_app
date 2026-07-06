@@ -10,7 +10,8 @@ import java.util.Locale
 
 class FolderAdapter(
     private var folders: List<FolderData>,
-    private val onClick: (FolderData) -> Unit
+    private val onClick: (FolderData) -> Unit,
+    private val onEditClick: (FolderData) -> Unit
 ) : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
 
     inner class FolderViewHolder(val binding: ItemFolderBinding) :
@@ -33,6 +34,8 @@ class FolderAdapter(
         holder.binding.tvFolderTime.text = timeFormat.format(date)
 
         holder.itemView.setOnClickListener { onClick(folder) }
+
+        holder.binding.tvGotoNote.setOnClickListener { onEditClick(folder) }
     }
 
     override fun getItemCount() = folders.size

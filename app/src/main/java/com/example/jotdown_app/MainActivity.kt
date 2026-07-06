@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jotdown_app.databinding.ActivityMainBinding
 import com.example.jotdown_app.databinding.EditNoteBinding
+import com.example.jotdown_app.databinding.EditFolderBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -43,15 +44,22 @@ class MainActivity : AppCompatActivity() {
         noteAdapter = NoteAdapter(emptyList()){ note ->
             showEditNoteDialog(uid, note)
         }
+
         binding.rvNotes.layoutManager = LinearLayoutManager(this)
         binding.rvNotes.adapter = noteAdapter
 
-        folderAdapter = FolderAdapter(emptyList()) { folder ->
-            val intent = Intent(this, Folder::class.java)
-            intent.putExtra("folderId", folder.id)
-            intent.putExtra("folderName", folder.title)
-            startActivity(intent)
-        }
+        folderAdapter = FolderAdapter(
+            emptyList(),
+            onClick = { folder ->
+                val intent = Intent(this, Folder::class.java)
+                intent.putExtra("folderId", folder.id)
+                intent.putExtra("folderName", folder.title)
+                startActivity(intent)
+            },
+            onEditClick = { folder ->
+                showEditFolder(uid, folder)
+            }
+        )
         binding.rvFolders.layoutManager = LinearLayoutManager(this)
         binding.rvFolders.adapter = folderAdapter
 
@@ -107,7 +115,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadNotes(uid: String) {
-        FirebaseFirestore.getInstance().collection("notes").document(uid)
+        val db = FirebaseFirestore.getInstance()
+        db.collection("notes").document(uid)
             .collection("user_notes")
             .whereEqualTo("folderId", "")
             .addSnapshotListener { snapshot, error ->
@@ -128,7 +137,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFolders(uid: String) {
-        FirebaseFirestore.getInstance().collection("folders").document(uid)
+        val db = FirebaseFirestore.getInstance()
+        db.collection("folders").document(uid)
             .collection("user_folders")
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
@@ -162,6 +172,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showEditNoteDialog(uid:String, note:Note){
+        val db = FirebaseFirestore.getInstance()
         val dialog = Dialog(this)
         val dialogBinding = EditNoteBinding.inflate(layoutInflater)
 
@@ -231,7 +242,7 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            FirebaseFirestore.getInstance().collection("notes").document(uid)
+            db.collection("notes").document(uid)
                 .collection("user_notes").document(note.id)
                 .update(
                     mapOf(
@@ -250,7 +261,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         dialogBinding.btnDelete.setOnClickListener {
-            FirebaseFirestore.getInstance().collection("notes").document(uid).collection("user_notes").document(note.id)
+            db.collection("notes").document(uid).collection("user_notes").document(note.id)
                 .delete()
                 .addOnSuccessListener {
                     Toast.makeText(this, "Note deleted", Toast.LENGTH_SHORT).show()
@@ -277,5 +288,76 @@ class MainActivity : AppCompatActivity() {
         val outputStream = ByteArrayOutputStream()
         bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 50, outputStream)
         return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
+    }
+
+    private fun showEditFolder(uid:String, folder: FolderData){
+        val db = FirebaseFirestore.getInstance()
+        val dialog = Dialog(this)
+        val dialogBinding = EditFolderBinding.inflate(layoutInflater)
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(dialogBinding.root)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialogBinding.etFolderTitle.setText(folder.title)
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnSave.setOnClickListener {
+            val newtitle = dialogBinding.etFolderTitle.text.toString().trim()
+
+            if (newtitle.isEmpty()){
+                dialogBinding.etFolderTitle.error = "Folder name is required"
+                return@setOnClickListener
+            }
+
+            db.collection("folders").document(uid)
+                .collection("user_folders").document(folder.id)
+                .update(mapOf(
+                    "title" to newtitle,
+                    "timestamp" to System.currentTimeMillis()
+                ))
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Folder update", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }.addOnFailureListener { e ->
+                    Toast.makeText(this, "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+
+        dialogBinding.btnDelete.setOnClickListener {
+            db.collection("notes").document(uid)
+                .collection("user_notes")
+                .whereEqualTo("folderId", folder.id)
+                .get()
+                .addOnSuccessListener { notesSnapshot ->
+
+                    val batch = db.batch()
+
+                    for (doc in notesSnapshot.documents) {
+                        batch.delete(doc.reference)
+                    }
+
+                    val folderRef = db.collection("folders").document(uid)
+                        .collection("user_folders").document(folder.id)
+
+                    batch.delete(folderRef)
+
+                    batch.commit()
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Folder and notes deleted", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Delete failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Failed to find notes: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+        dialog.show()
     }
 }
