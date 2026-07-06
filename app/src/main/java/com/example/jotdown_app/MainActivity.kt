@@ -322,8 +322,8 @@ class MainActivity : AppCompatActivity() {
                 .addOnSuccessListener {
                     Toast.makeText(this, "Folder update", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
-                }.addOnFailureListener { e ->
-                    Toast.makeText(this, "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+                    Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show()
                 }
         }
 
@@ -344,14 +344,13 @@ class MainActivity : AppCompatActivity() {
                         .collection("user_folders").document(folder.id)
 
                     batch.delete(folderRef)
-
                     batch.commit()
                         .addOnSuccessListener {
-                            Toast.makeText(this, "Folder and notes deleted", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Folder deleted", Toast.LENGTH_SHORT).show()
                             dialog.dismiss()
                         }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "Delete failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Delete failed", Toast.LENGTH_SHORT).show()
                         }
                 }
                 .addOnFailureListener { e ->
