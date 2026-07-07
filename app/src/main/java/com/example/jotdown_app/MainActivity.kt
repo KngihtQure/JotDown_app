@@ -190,10 +190,23 @@ class MainActivity : AppCompatActivity() {
 
             dialogBinding.layoutAddImage.visibility = View.GONE
             dialogBinding.ivImagePreview.visibility = View.VISIBLE
+            dialogBinding.btnRemoveImage.visibility = View.VISIBLE
             dialogBinding.ivImagePreview.setImageBitmap(bitmap)
 
             val params = dialogBinding.btnSave.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
-            params.topToBottom = dialogBinding.ivImagePreview.id
+            params.topToBottom = dialogBinding.cardImageContainer.id
+            dialogBinding.btnSave.layoutParams = params
+        }
+
+        dialogBinding.btnRemoveImage.setOnClickListener {
+            imageVal = ""
+            dialogBinding.ivImagePreview.setImageBitmap(null)
+            dialogBinding.ivImagePreview.visibility = View.GONE
+            dialogBinding.btnRemoveImage.visibility = View.GONE
+            dialogBinding.layoutAddImage.visibility = View.VISIBLE
+
+            val params = dialogBinding.btnSave.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+            params.topToBottom = dialogBinding.cardImageContainer.id
             dialogBinding.btnSave.layoutParams = params
         }
 
@@ -208,9 +221,10 @@ class MainActivity : AppCompatActivity() {
         if(note.imageUrl.isNotEmpty()){
             dialogBinding.layoutAddImage.visibility = View.GONE
             dialogBinding.ivImagePreview.visibility = View.VISIBLE
+            dialogBinding.btnRemoveImage.visibility = View.VISIBLE
 
             val params = dialogBinding.btnSave.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
-            params.topToBottom = dialogBinding.ivImagePreview.id
+            params.topToBottom = dialogBinding.cardImageContainer.id
             dialogBinding.btnSave.layoutParams = params
             try{
                 val imageBytes = Base64.decode(note.imageUrl, Base64.DEFAULT)
@@ -218,10 +232,11 @@ class MainActivity : AppCompatActivity() {
                 dialogBinding.ivImagePreview.setImageBitmap(bitmap)
             }catch (e: Exception){
                 dialogBinding.ivImagePreview.visibility = View.GONE
+                dialogBinding.btnRemoveImage.visibility = View.GONE
                 dialogBinding.layoutAddImage.visibility = View.VISIBLE
 
                 val params = dialogBinding.btnSave.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
-                params.topToBottom = dialogBinding.layoutAddImage.id
+                params.topToBottom = dialogBinding.cardImageContainer.id
                 dialogBinding.btnSave.layoutParams = params
             }
         }else{

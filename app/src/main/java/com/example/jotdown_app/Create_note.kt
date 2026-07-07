@@ -40,6 +40,7 @@ class Create_note : AppCompatActivity() {
                 selectedImageUri = uri
                 binding.ivImagePreview.setImageURI(uri)
                 binding.ivImagePreview.visibility = View.VISIBLE
+                binding.btnRemoveImage.visibility = View.VISIBLE
                 binding.layoutAddImage.visibility = View.GONE
             }
         }
@@ -68,6 +69,14 @@ class Create_note : AppCompatActivity() {
 
         binding.ivImagePreview.setOnClickListener {
             pickImageLauncher.launch("image/*")
+        }
+
+        binding.btnRemoveImage.setOnClickListener {
+            selectedImageUri = null
+            binding.ivImagePreview.setImageURI(null)
+            binding.ivImagePreview.visibility = View.GONE
+            binding.btnRemoveImage.visibility = View.GONE
+            binding.layoutAddImage.visibility = View.VISIBLE
         }
 
         binding.btnSave.setOnClickListener {
