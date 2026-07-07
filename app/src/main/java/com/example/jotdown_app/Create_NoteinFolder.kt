@@ -90,7 +90,7 @@ class Create_NoteinFolder : AppCompatActivity() {
             saveNoteToDatabase(uid, title, content, base64Image, folderId)
         }
 
-        binding.btnBack.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             finish()
         }
     }
