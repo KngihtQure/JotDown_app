@@ -35,7 +35,7 @@ class FolderAdapter(
 
         holder.itemView.setOnClickListener { onClick(folder) }
 
-        holder.binding.tvGotoNote.setOnClickListener { onEditClick(folder) }
+        holder.binding.btnEditFolder.setOnClickListener { onEditClick(folder) }
     }
 
     override fun getItemCount() = folders.size

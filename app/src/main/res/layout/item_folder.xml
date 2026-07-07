@@ -31,13 +31,12 @@
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/tvGotoNote"
+            <ImageButton
+                android:id="@+id/btnEditFolder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="40sp"
-                android:textStyle="bold"
-                android:text=">"/>
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/outline_edit_square"/>
 
         </LinearLayout>
 
