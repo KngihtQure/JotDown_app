@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginTop="24dp"
-        android:text="Hi,  "
+        android:text="Hi, User."
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
