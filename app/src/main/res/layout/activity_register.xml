@@ -108,7 +108,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Email Address"
                     android:inputType="textEmailAddress"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:theme="@style/JotDownSignature"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -127,7 +128,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Username"
                     android:inputType="textVisiblePassword|textNoSuggestions"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:theme="@style/JotDownSignature"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -146,7 +148,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:theme="@style/JotDownSignature"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

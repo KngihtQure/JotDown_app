@@ -8,33 +8,35 @@
     tools:context=".Create_NoteinFolder">
 
 
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="20dp"
+        android:alpha="0.5"
+        android:background="@android:color/transparent"
+        android:contentDescription="Back"
+        android:scaleType="centerInside"
+        android:src="@drawable/outline_arrow_back"
+        app:layout_constraintBottom_toBottomOf="@id/tvFolderName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvFolderName"
+        app:tint="@color/black" />
+
     <TextView
         android:id="@+id/tvFolderName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="24dp"
+        android:alpha="0.5"
         android:text="Folder Name"
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:alpha="0.5"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginEnd="24dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="Logout"
-        android:scaleType="centerInside"
-        android:src="@drawable/outline_arrow_back_ios_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvGreeting"
-        app:tint="@color/black"
-        android:alpha="0.5"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,8 +65,10 @@
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="13sp"
+            android:theme="@style/JotDownSignature"
             android:enabled="false"
             android:alpha="0.5"/>
+
     </LinearLayout>
 
     <ScrollView
@@ -137,9 +141,10 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
                 android:textSize="13sp"
+                android:theme="@style/JotDownSignature"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTitleLabel" />
+                app:layout_constraintTop_toBottomOf="@id/tvTitleLabel"/>
 
 
             <TextView
@@ -167,9 +172,10 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
                 android:textSize="13sp"
+                android:theme="@style/JotDownSignature"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvBodyLabel" />
+                app:layout_constraintTop_toBottomOf="@id/tvBodyLabel"/>
 
 
             <TextView

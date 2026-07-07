@@ -7,6 +7,10 @@
 
     <style name="Theme.JotDown" parent="Base.Theme.JotDown" />
 
+    <style name="JotDownSignature" parent="">
+        <item name="colorControlActivated">@color/green</item>
+    </style>
+
     <style name="RoundedImageView" parent="">
         <item name="cornerSize">20dp</item>
     </style>

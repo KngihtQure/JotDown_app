@@ -8,30 +8,32 @@
     tools:context=".Folder">
 
 
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="20dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Back"
+        android:scaleType="centerInside"
+        android:src="@drawable/outline_arrow_back"
+        app:layout_constraintBottom_toBottomOf="@id/tvFolderName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvFolderName"
+        app:tint="@color/black" />
+
     <TextView
         android:id="@+id/tvFolderName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="24dp"
         android:text="Folder Name"
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginEnd="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="centerInside"
-        android:src="@drawable/outline_arrow_back_ios_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvFolderName"
-        app:tint="@color/black"/>
 
     <LinearLayout
         android:id="@+id/layoutSearch"
@@ -61,7 +63,9 @@
             android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:theme="@style/JotDownSignature"/>
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

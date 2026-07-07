@@ -82,7 +82,9 @@
             android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:theme="@style/JotDownSignature"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -176,7 +178,7 @@
             app:backgroundTint="@null" />
 
         <Space
-            android:layout_width="100dp"
+            android:layout_width="111dp"
             android:layout_height="0dp" />
 
         <Button

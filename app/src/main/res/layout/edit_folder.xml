@@ -38,9 +38,10 @@
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
             android:textSize="13sp"
+            android:theme="@style/JotDownSignature"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitleLabel" />
+            app:layout_constraintTop_toBottomOf="@id/tvTitleLabel"/>
 
 
         <Button
