@@ -22,6 +22,7 @@ class Register : AppCompatActivity() {
         val txtEmail = findViewById<TextInputEditText>(R.id.email)
         val txtPassword = findViewById<TextInputEditText>(R.id.password)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
+        val btnBack = findViewById<Button>(R.id.btnBack)
 
         btnRegister.setOnClickListener{
             val username = txtName.text.toString()
@@ -53,6 +54,11 @@ class Register : AppCompatActivity() {
                         Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
                     }
                 }
+        }
+
+        btnBack.setOnClickListener {
+            startActivity(Intent(this, Login::class.java))
+            finish()
         }
     }
 }

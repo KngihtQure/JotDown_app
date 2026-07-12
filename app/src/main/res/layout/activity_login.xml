@@ -150,8 +150,9 @@
                     android:text="Login"
                     android:textSize="15sp"
                     android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                    android:backgroundTint="@color/green"
+                    android:background="@drawable/bg_button_green"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:stateListAnimator="@null" />
 
                 <Button
