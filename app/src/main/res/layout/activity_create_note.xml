@@ -85,6 +85,7 @@
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="13sp"
+            android:theme="@style/JotDownSignature"
             android:enabled="false"
             android:alpha="0.5"/>
     </LinearLayout>
@@ -159,6 +160,7 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
                 android:textSize="13sp"
+                android:theme="@style/JotDownSignature"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTitleLabel" />
@@ -189,6 +191,7 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
                 android:textSize="13sp"
+                android:theme="@style/JotDownSignature"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvBodyLabel" />

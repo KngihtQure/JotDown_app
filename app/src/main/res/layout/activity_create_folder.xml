@@ -73,20 +73,21 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_weight="1"
+            android:alpha="0.5"
             android:background="@drawable/bg_input_field"
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="8dp"
+            android:enabled="false"
             android:gravity="center_vertical"
             android:hint="Search"
             android:inputType="text"
             android:paddingStart="14dp"
             android:paddingEnd="14dp"
             android:singleLine="true"
+            android:theme="@style/JotDownSignature"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
-            android:textSize="13sp"
-            android:enabled="false"
-            android:alpha="0.5"/>
+            android:textSize="13sp" />
     </LinearLayout>
 
 
@@ -127,6 +128,7 @@
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
             android:textSize="13sp"
+            android:theme="@style/JotDownSignature"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitleLabel" />
